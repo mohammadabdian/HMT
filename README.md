@@ -1,2 +1,38 @@
-# Mamba_Caption
-PyTorch implementation of a Mamba–Transformer captioning model. Encoder uses 2D cross‑shaped scanning + dual gating on CLIP features. Decoder replaces self‑attention with Mamba while keeping cross‑attention. Achieves linear complexity and strong COCO/Flickr30k performance.
+HMT: A Hybrid Mamba–Transformer Architecture for Image Captioning
+Official implementation of HMT – a novel encoder-decoder architecture for image captioning that combines Mamba's linear-time efficiency with Transformer's cross-modal alignment capabilities.
+
+Abstract
+Image captioning requires efficient modeling of visual-linguistic interactions. Transformers excel at cross-modal alignment but suffer from quadratic complexity, while SSMs like Mamba offer linear scaling but struggle with multi-modal integration. HMT unifies both paradigms through: (1) a Vision Mamba encoder with cross-shaped 2D scanning that preserves spatial topology, (2) a gated feature fusion mechanism, and (3) a causal Mamba decoder with cross-attention. Evaluated on MS COCO and Flickr30k, HMT achieves superior accuracy with reduced computational overhead.
+
+Architecture Overview
+Encoder: Vision Mamba with dual-path (horizontal + vertical) 2D scanning + gated feature fusion
+
+Decoder: Causal Mamba blocks + cross-attention for visual grounding
+
+Backbone: CLIP ViT-B/32 (frozen)
+
+Training Details
+Hardware	Training Time	Total Duration
+NVIDIA RTX 4090 (24GB)	5 × 7300 sec	~10.1 hours
+Hyperparameters
+Config	Value
+Batch Size	64
+Epochs	30
+Optimizer	AdamW (lr=1e-4)
+Label Smoothing	0.1
+Beam Size	3
+Datasets
+MS COCO: 113,287 / 5,000 / 5,000 (train/val/test)
+
+Flickr30k: 29,783 / 1,000 / 1,000
+
+Evaluation Metrics
+BLEU, METEOR, ROUGE-L, SPICE, CIDEr
+
+Quick Start
+bash
+# Training
+python train.py --dataset coco --batch_size 64 --epochs 30
+
+# Inference
+python generate.py --image path/to/image.jpg
