@@ -18,9 +18,10 @@ Image captioning requires efficient modeling of visual-linguistic interactions. 
 
 ## Training Details
 
-| Hardware | Training Time | Total Duration |
-|----------|---------------|----------------|
-| NVIDIA RTX 4090 (24GB) | 5 × 7300 sec | ~10.1 hours |
+| Dataset | Hardware | Training Duration |
+|---------|----------|-------------------|
+| MS COCO | NVIDIA RTX 4090 (24GB) | 10.1 hours |
+| Flickr30k | NVIDIA RTX 4090 (24GB) | 2.3 hours |
 
 ### Hyperparameters
 
