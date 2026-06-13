@@ -60,7 +60,6 @@ python -m HMT/feature_pipeline/run
 # Training
 python -m HMT/train
 
-## 🔜 Coming Soon
-
-- 📊 Full results & ablation studies
-- 📄 Final paper
+🔜 Coming Soon
+. 📊 Full results & ablation studies
+. 📄 Final paper
