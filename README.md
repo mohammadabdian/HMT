@@ -47,6 +47,10 @@ Criterion: CrossEntropyLoss with `ignore_index=pad_token_id` and `label_smoothin
 | MS COCO | 113,287 | 5,000 | 5,000 |
 | Flickr30k | 29,783 | 1,000 | 1,000 |
 
+
+## Evaluation Metrics
+BLEU1-4, METEOR, ROUGE-L, SPICE, CIDEr
+
 ## Quick Start
 
 ```bash
@@ -56,12 +60,8 @@ python -m HMT/feature_pipeline/run
 # Training
 python -m HMT/train
 
+## 🔜 Coming Soon
 
-## Evaluation Metrics
-BLEU1-4, METEOR, ROUGE-L, SPICE, CIDEr
-
-
-🔜 Coming Soon ...
-. 📊 Full results & ablation studies
-. 📄 Final paper
+- 📊 Full results & ablation studies
+- 📄 Final paper
 
