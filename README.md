@@ -22,8 +22,8 @@ Image captioning requires efficient modeling of visual-linguistic interactions. 
 
 | Config | Value |
 |--------|-------|
-| Batch Size | 64 |
-| Epochs | 30 |
+| Batch Size | 32 |
+| Epochs | 5 |
 | Optimizer | AdamW (lr=1e-4) |
 | Label Smoothing | 0.1 |
 | Beam Size | 3 |
@@ -41,7 +41,8 @@ BLEU, METEOR, ROUGE-L, SPICE, CIDEr
 
 ```bash
 # Training
-python train.py --dataset coco --batch_size 64 --epochs 30
+python -m HMT/feature_pipeline/run
+حغ
+python -m  HMT/train
 
-# Inference
-python generate.py --image path/to/image.jpg
+
