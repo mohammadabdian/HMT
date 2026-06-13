@@ -20,13 +20,22 @@ Image captioning requires efficient modeling of visual-linguistic interactions. 
 
 ### Hyperparameters
 
-| Config | Value |
-|--------|-------|
+| Parameter | Value |
+|-----------|-------|
 | Batch Size | 32 |
 | Epochs | 5 |
-| Optimizer | AdamW (lr=1e-4) |
+| Optimizer | AdamW |
+| Learning Rate | 1e-4 |
+| Weight Decay | 0.01 |
 | Label Smoothing | 0.1 |
-| Beam Size | 3 |
+| Gradient Clipping | 1.0 |
+| Warmup Ratio | 0.05 |
+| Scheduler | Cosine Annealing |
+| Beam Search (inference) | 3 |
+
+### Loss Function
+
+- **Criterion**: CrossEntropyLoss with `ignore_index=pad_token_id` and `label_smoothing=0.1`
 
 ## Datasets
 
@@ -35,7 +44,7 @@ Image captioning requires efficient modeling of visual-linguistic interactions. 
 
 ## Evaluation Metrics
 
-BLEU, METEOR, ROUGE-L, SPICE, CIDEr
+BLEU1-4, METEOR, ROUGE-L, SPICE, CIDEr
 
 ## Quick Start
 
