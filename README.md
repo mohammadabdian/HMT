@@ -42,7 +42,6 @@ BLEU, METEOR, ROUGE-L, SPICE, CIDEr
 ```bash
 # Training
 python -m HMT/feature_pipeline/run
-حغ
 python -m  HMT/train
 
 
