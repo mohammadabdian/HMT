@@ -5,7 +5,7 @@ def generate_caption(
     model,
     image_features,
     tokenizer,
-    max_len=48, # بر اساس خروجی شما که طولش 48 بود
+    max_len=48, 
     beam_size=3
 ):
     model.eval()
