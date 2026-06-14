@@ -76,7 +76,7 @@ class FastEvaluator:
 
     @torch.no_grad()
     def generate_batch(self, features, max_len=48, beam_size=3):
-        """Beam Search پایدار - مشکل طول متفاوت حل شده"""
+        """Beam Search"""
         batch_size = features.size(0)
         device = self.device
         bos_id = self.tokenizer.bos_token_id
@@ -154,7 +154,6 @@ class FastEvaluator:
 
     @torch.no_grad()
     def greedy_generate(self, features, max_len, bos_id, eos_id, pad_id):
-        # (همان کد قبلی greedy - بدون تغییر)
         batch_size = features.size(0)
         sequences = torch.full((batch_size, 1), bos_id, dtype=torch.long, device=self.device)
         finished = torch.zeros(batch_size, dtype=torch.bool, device=self.device)
@@ -174,24 +173,20 @@ class FastEvaluator:
         return padded
     
     def compute_metrics_with_multiple_refs(self, refs_by_image, hyps_by_image):
-        """محاسبه متریک‌ها با چندین کپشن برای هر تصویر"""
         print("Computing metrics with multiple references per image...")
         
         all_meteor_scores = []
         all_rouge_scores = []
         
-        # برای BLEU: هر تصویر یک hypothesis و چندین reference
         all_references = []
         all_hypotheses = []
         
-        # برای CIDEr و SPICE
         cider_refs = {}
         cider_hyps = {}
         
         for idx, (img_id, refs) in enumerate(refs_by_image.items()):
             hypothesis = hyps_by_image[img_id]
             
-            # تبدیل به لیست کلمات
             refs_tokenized = [ref.split() for ref in refs]
             hyp_tokenized = hypothesis.split()
             
@@ -213,7 +208,6 @@ class FastEvaluator:
             cider_refs[idx] = refs
             cider_hyps[idx] = [hypothesis]
         
-        # محاسبه BLEU با چندین reference
         bleu_scores = {}
         for n in [1, 2, 3, 4]:
             weights = tuple([1.0/n]*n) + tuple([0.0]*(4-n))
@@ -249,7 +243,6 @@ class FastEvaluator:
         return metrics
     
     def corpus_bleu_with_multiple_refs(self, references_list, hypotheses, weights):
-        """محاسبه BLEU با چندین reference برای هر جمله"""
         from nltk.translate.bleu_score import corpus_bleu
         return corpus_bleu(references_list, hypotheses, weights)
     
