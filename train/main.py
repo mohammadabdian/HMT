@@ -12,7 +12,7 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
-    epochs = 14
+    epochs = 12
 
     tokenizer, train_loader, val_loader, test_loader = build_dataloaders()
 
@@ -67,8 +67,8 @@ def main():
     features, captions, img_ids = next(iter(test_loader))
     features = features.to(device).float()
 
-    config_beam1 = GenerationConfig(beam_size=3, max_len=48, temperature=1, use_sampling=False, top_p=0.95,repetition_penalty = 1.5)
-    config_beam3 = GenerationConfig(beam_size=5, max_len=48, temperature=1, use_sampling=True, top_p=0.95,repetition_penalty =1.3)
+    config_beam3 = GenerationConfig(beam_size=3, max_len=48, temperature=1, use_sampling=False, top_p=1,repetition_penalty = 1)
+    config_beam5 = GenerationConfig(beam_size=5, max_len=48, temperature=1, use_sampling=False, top_p=1,repetition_penalty =1)
 
     out1 = generator.generate_batch(features[:2], config_beam1)
     out3 = generator.generate_batch(features[:2], config_beam3)
@@ -78,11 +78,11 @@ def main():
     print("Beam-3:", tokenizer.decode(out3[0], skip_special_tokens=True))
 
     print("\nRunning evaluation...")
-    eval_config = GenerationConfig(beam_size=5, max_len=48, temperature=1, use_sampling=False, top_p=0.9,repetition_penalty = 1.4)
+    eval_config = GenerationConfig(beam_size=3, max_len=48, temperature=1, use_sampling=False, top_p=1,repetition_penalty = 1)
     evaluator = FastEvaluator(
         model=model,
         tokenizer=tokenizer,
-        eval_size=6000,
+        eval_size=5000,
         save_dir=str(results_dir / "evaluation"),
         num_workers=4,
     )
