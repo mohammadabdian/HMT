@@ -16,7 +16,7 @@ class Config(MambaConfig):
     def __init__(
         self,
         dim: int = 384,
-        layers: int = 4,
+        layers: int = 3,
         heads: int = 6,
         hidden: int = 1536,
         dropout: float = 0.1,
@@ -25,7 +25,7 @@ class Config(MambaConfig):
         pos_enc: bool = True,
         max_len: int = 48,
         # --- vision encoder params ---
-        vision_layers: int = 2,
+        vision_layers: int = 3,
         dt_rank: int = 16,
         d_state: int = 128,
         **kwargs
