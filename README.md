@@ -54,26 +54,19 @@ Official PyTorch implementation of **HMT**, a hybrid Vision Mamba–Transformer 
 
 ## 📈 Results
 
-### MS COCO Karpathy Test Split
+#### MS COCO (Karpathy Test Split)
 
-| BLEU-4 | CIDEr |
-|-------:|------:|
-| **38.4** | **122.5** |
+| B@1 | B@4 | METEOR | ROUGE-L | CIDEr | SPICE |
+|:---:|:---:|:-------:|:--------:|:------:|:------:|
+| **78.2** | **38.4** | **28.7** | **58.8** | **122.5** | **22.7** |
 
-### Flickr30k Karpathy Test Split
+### Flickr30k (Karpathy Test Split)
 
-| Metric | Score |
-|--------|------:|
-| BLEU-1 | 68.3 |
-| BLEU-2 | 52.4 |
-| BLEU-3 | **39.4** |
-| BLEU-4 | **29.3** |
-| METEOR | **25.6** |
-| ROUGE-L | **50.1** |
-| CIDEr | **63.8** |
-| SPICE | **16.6** |
-
+| B@1 | B@2 | B@3 | B@4 | METEOR | ROUGE-L | CIDEr | SPICE |
+|:---:|:---:|:---:|:---:|:-------:|:--------:|:------:|:------:|
+| **68.3** | **52.4** | **39.4** | **29.3** | **25.6** | **50.1** | **63.8** | **16.6** |
 ---
+
 
 ## ⚙️ Training
 
@@ -82,7 +75,7 @@ Official PyTorch implementation of **HMT**, a hybrid Vision Mamba–Transformer 
 | GPU | RTX 4090 (24GB) |
 | Optimizer | AdamW |
 | Batch Size | 32 |
-| Epochs | 5 |
+| Epochs | 8 |
 | Learning Rate | 1e-4 |
 | Scheduler | Cosine Annealing |
 | Beam Size | 3 |
@@ -121,36 +114,11 @@ Experiments follow the standard **Karpathy split**.
 
 ```bash
 # Feature extraction
-python -m HMT.feature_pipeline.run
+python -m feature_pipeline/run
 
-# Training
-python -m HMT.train
+# Training & Evaluation
+python -m train/main
 
-# Evaluation
-python -m HMT.evaluate
-
-# Inference
-python -m HMT.inference
-```
-
----
-
-## 📁 Repository Structure
-
-```
-HMT/
-├── configs/
-├── datasets/
-├── feature_pipeline/
-├── models/
-├── utils/
-├── train.py
-├── evaluate.py
-├── inference.py
-└── README.md
-```
-
----
 
 ## 📄 Paper
 
@@ -171,7 +139,7 @@ The complete implementation is available at:
 ```bibtex
 @article{abdian2026hmt,
   title={HMT: A Hybrid Mamba--Transformer Architecture for Image Captioning},
-  author={Mohammad Abdian and Sayeh Mirzaei},
+  author={Mohammad Abdian, Sayeh Mirzaei},
   journal={Under Review},
   year={2026}
 }
