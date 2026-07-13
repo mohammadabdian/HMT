@@ -3,10 +3,13 @@ import math
 import torch
 import torch.nn as nn
 from torch.optim import AdamW
-from torch.optim.lr_scheduler import LambdaLR
+from torch.optim.lr_scheduler import ExponentialLR
 from tqdm import tqdm
 from model.model import Captioner, Config
 
+# Hyperparameter settings
+INITIAL_LR = 1e-4
+GAMMA = 0.95
 
 def build_model(tokenizer, device, epochs, train_loader_len):
 
@@ -21,23 +24,11 @@ def build_model(tokenizer, device, epochs, train_loader_len):
 
     optimizer = AdamW(
         model.parameters(),
-        lr=1e-4,
+        lr=INITIAL_LR,
         weight_decay=0.01
     )
 
-    total_steps = epochs * train_loader_len
-    warmup_ratio = 0.05
-    warmup_steps = int(total_steps * warmup_ratio)
-
-    def lr_lambda(current_step):
-        if current_step < warmup_steps:
-            return float(current_step) / float(max(1, warmup_steps))
-        progress = float(current_step - warmup_steps) / float(
-            max(1, total_steps - warmup_steps)
-        )
-        return 0.5 * (1.0 + math.cos(math.pi * progress))
-
-    scheduler = LambdaLR(optimizer, lr_lambda)
+    scheduler = ExponentialLR(optimizer, gamma=GAMMA)
 
     return model, criterion, optimizer, scheduler
 
@@ -93,7 +84,6 @@ def train_loop(
             )
 
             optimizer.step()
-            scheduler.step()
 
             global_step += 1
             epoch_loss += loss.item()
@@ -102,6 +92,9 @@ def train_loop(
                 "train_loss": f"{loss.item():.4f}",
                 "lr": f"{optimizer.param_groups[0]['lr']:.6f}"
             })
+
+        # Step the scheduler after each epoch
+        scheduler.step()
 
         avg_train_loss = epoch_loss / len(train_loader)
 
@@ -135,7 +128,8 @@ def train_loop(
             f"\n> Epoch {epoch+1}: "
             f"Train {avg_train_loss:.4f} | "
             f"Val {avg_val_loss:.4f} | "
-            f"Time {duration:.2f}s"
+            f"Time {duration:.2f}s | "
+            f"LR {optimizer.param_groups[0]['lr']:.6f}"
         )
 
         torch.save(
