@@ -1,66 +1,184 @@
-# HMT: A Hybrid Mamba–Transformer Architecture for Image Captioning
+# HMT: Hybrid Mamba–Transformer for Image Captioning
 
-Official implementation of HMT – a novel encoder-decoder architecture for image captioning that combines Mamba's linear-time efficiency with Transformer's cross-modal alignment capabilities.
+<p align="center">
 
-## Architecture Overview
+Official PyTorch implementation of **HMT**, a hybrid Vision Mamba–Transformer architecture for efficient image captioning.
 
-![HMT Architecture](assets/diagram.png)
+**Authors:** Mohammad Abdian, Sayeh Mirzaei
 
-**Encoder**: Vision Mamba with dual-path (horizontal + vertical) 2D scanning + gated feature fusion  
-**Decoder**: Causal Mamba blocks + cross-attention for visual grounding  
-**Backbone**: CLIP ViT-B/32 (frozen)
+</p>
 
-## Abstract
+---
 
-Image captioning requires efficient modeling of visual-linguistic interactions. Transformers excel at cross-modal alignment but suffer from quadratic complexity, while SSMs like Mamba offer linear scaling but struggle with multi-modal integration. HMT unifies both paradigms through: (1) a Vision Mamba encoder with cross-shaped 2D scanning that preserves spatial topology, (2) a gated feature fusion mechanism, and (3) a causal Mamba decoder with cross-attention. Evaluated on MS COCO and Flickr30k, HMT achieves superior accuracy with reduced computational overhead.
+## ✨ Highlights
 
-## Training Details
+- 🚀 Hybrid Vision Mamba–Transformer architecture
+- 🔄 Cross-shaped 2D spatial scanning
+- 🧠 Gated fusion of CLIP and Vision Mamba features
+- ⚡ Causal Mamba decoder with Transformer cross-attention
+- 📉 Only **7.3 GFLOPs**
+- 🎯 Competitive performance on **MS COCO** and **Flickr30k**
 
-| Dataset | Hardware | Training Duration |
-|---------|----------|-------------------|
-| MS COCO | NVIDIA RTX 4090 (24GB) | 10.1 hours |
-| Flickr30k | NVIDIA RTX 4090 (24GB) | 2.3 hours |
+---
 
-### Hyperparameters
+## 🏗️ Architecture
 
-| Parameter | Value |
-|-----------|-------|
+<p align="center">
+<img src="assets/diagram.png" width="900">
+</p>
+
+### Encoder
+- Frozen CLIP ViT-B/32
+- Vision Mamba
+- Horizontal & Vertical Scan
+- Gated Feature Fusion
+
+### Decoder
+- Causal Mamba
+- Cross-Attention
+- Linear-time sequence modeling
+
+---
+
+## 📊 Model Statistics
+
+| Item | Value |
+|------|------:|
+| Backbone | CLIP ViT-B/32 |
+| Total Parameters | **138.6M** |
+| Trainable Parameters | **50.8M** |
+| Frozen Parameters | **87.8M** |
+| FLOPs | **7.3G** |
+
+---
+
+## 📈 Results
+
+### MS COCO Karpathy Test Split
+
+| BLEU-4 | CIDEr |
+|-------:|------:|
+| **38.4** | **122.5** |
+
+### Flickr30k Karpathy Test Split
+
+| Metric | Score |
+|--------|------:|
+| BLEU-1 | 68.3 |
+| BLEU-2 | 52.4 |
+| BLEU-3 | **39.4** |
+| BLEU-4 | **29.3** |
+| METEOR | **25.6** |
+| ROUGE-L | **50.1** |
+| CIDEr | **63.8** |
+| SPICE | **16.6** |
+
+---
+
+## ⚙️ Training
+
+| Item | Value |
+|------|------:|
+| GPU | RTX 4090 (24GB) |
+| Optimizer | AdamW |
 | Batch Size | 32 |
 | Epochs | 5 |
-| Optimizer | AdamW |
 | Learning Rate | 1e-4 |
-| Weight Decay | 0.01 |
-| Label Smoothing | 0.1 |
-| Gradient Clipping | 1.0 |
-| Warmup Ratio | 0.05 |
 | Scheduler | Cosine Annealing |
-| Beam Search (inference) | 3 |
+| Beam Size | 3 |
 
-### Loss Function
+Training Time
 
-Criterion: CrossEntropyLoss with `ignore_index=pad_token_id` and `label_smoothing=0.1`
+| Dataset | Time |
+|---------|------|
+| MS COCO | 10.1 h |
+| Flickr30k | 2.3 h |
 
-## Datasets
+---
 
-| Dataset | Train | Validation | Test |
-|---------|-------|------------|------|
+## 📂 Datasets
+
+Experiments follow the standard **Karpathy split**.
+
+| Dataset | Train | Val | Test |
+|---------|------:|----:|-----:|
 | MS COCO | 113,287 | 5,000 | 5,000 |
 | Flickr30k | 29,783 | 1,000 | 1,000 |
 
+---
 
-## Evaluation Metrics
-BLEU1-4, METEOR, ROUGE-L, SPICE, CIDEr
+## 📏 Evaluation Metrics
 
-## 🔜 Coming Soon
+- BLEU-1 / BLEU-2 / BLEU-3 / BLEU-4
+- METEOR
+- ROUGE-L
+- CIDEr
+- SPICE
 
-- 📊 Full results & ablation studies
-- 📄 Final paper
+---
 
-## Quick Start
+## 🚀 Quick Start
 
 ```bash
 # Feature extraction
-python -m HMT/feature_pipeline/run
+python -m HMT.feature_pipeline.run
 
 # Training
-python -m HMT/train
+python -m HMT.train
+
+# Evaluation
+python -m HMT.evaluate
+
+# Inference
+python -m HMT.inference
+```
+
+---
+
+## 📁 Repository Structure
+
+```
+HMT/
+├── configs/
+├── datasets/
+├── feature_pipeline/
+├── models/
+├── utils/
+├── train.py
+├── evaluate.py
+├── inference.py
+└── README.md
+```
+
+---
+
+## 📄 Paper
+
+The manuscript is currently under review.
+
+---
+
+## 💻 Code Availability
+
+The complete implementation is available at:
+
+**https://github.com/mohammadabdian/HMT**
+
+---
+
+## 📚 Citation
+
+```bibtex
+@article{abdian2026hmt,
+  title={HMT: A Hybrid Mamba--Transformer Architecture for Image Captioning},
+  author={Mohammad Abdian and Sayeh Mirzaei},
+  journal={Under Review},
+  year={2026}
+}
+```
+
+---
+
+## 📜 License
+
+Released for academic research purposes.
