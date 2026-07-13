@@ -24,7 +24,7 @@ Official PyTorch implementation of **HMT**, a hybrid Vision Mamba–Transformer 
 ## 🏗️ Architecture
 
 <p align="center">
-<img src="assets/diagram.png" width="900">
+<img src="assets/diagram.png" width="1200">
 </p>
 
 ### Encoder
